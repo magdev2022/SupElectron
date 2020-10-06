@@ -50,7 +50,7 @@ const ColorButton = withStyles((theme: Theme) => ({
   root: {
     color: "#dddddd99",
     backgroundColor: "#dddddd00",
-    width: 200,
+    width: 160,
     height: 40,
     borderRadius: "5px",
     marginLeft: 10,
@@ -88,6 +88,7 @@ function AccountProfileComponent(props: Props) {
 
   const {userProfiles, setuserProfiles } =React.useContext(contentContext);
 
+  //handle all inputs of profile
   const handleChangeProfile = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();  
     e.target.name != ""
@@ -100,6 +101,21 @@ function AccountProfileComponent(props: Props) {
           [e.target.id]: e.target.value,
         }));  
   };
+
+  //handle profiles when select the profilename
+  const handleChangeProfileList=(e:React.ChangeEvent<HTMLInputElement>)=>
+  {
+    for (let i = 0; i < userProfiles.length; i++) {
+      const element = userProfiles[i];
+      if(element.profilename==e.target.value)
+      {
+        setprofile(element);
+        break;
+      }
+    }
+  }
+
+  //create profile and save to json file
   const handleCreateProfile = () => {
     setuserProfiles(userProfiles.concat(profile))
     let senddata = {
@@ -108,6 +124,7 @@ function AccountProfileComponent(props: Props) {
     };
     ipcRenderer.send("data", senddata);  
   };
+
   const { classes } = props;
   return (
     <Grid container spacing={3}>
@@ -339,15 +356,38 @@ function AccountProfileComponent(props: Props) {
               label="Profile Name"
               onChange={handleChangeProfile}
               margin="normal"
+              style={{marginRight:100,marginBottom:50}}
               value={profile.profilename}
             />
-            <div>
+             <TextField
+              id="profilelist"
+              name="profilelist"
+              select
+              label="Profile List"
+              className={classes.textField}
+              InputProps={{ className: classes.input }}
+              InputLabelProps={{ className: classes.input }}
+              value={profile.profilename}
+              onChange={handleChangeProfileList}
+              SelectProps={{
+                MenuProps: {
+                  className: classes.menu,
+                },
+              }}
+              margin="normal"
+            >
+              {userProfiles.map((option) => (
+                <MenuItem value={option.profilename}>{option.profilename}</MenuItem>
+              ))}
+            </TextField>
+          </form>          
+          <div>
+            <ColorButton variant="outlined">Import Profile</ColorButton>
               <ColorButton variant="outlined" onClick={handleCreateProfile}>
                 Create Profile
               </ColorButton>
               <ColorButton variant="outlined">Delete Profile</ColorButton>
             </div>
-          </form>
         </div>
       </Grid>
     </Grid>

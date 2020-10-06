@@ -101,7 +101,8 @@ function AccountProfileComponent(props: Props) {
     refreshtime: 100,
     checkoutdelay: 250,
   });
-  const { userProfiles, setuserProfiles } = React.useContext(contentContext);
+
+  const { userProfiles, setuserProfiles,addTasks,setaddTasks } = React.useContext(contentContext);
   const handleChangeAddTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();
     e.target.name != ""
@@ -114,14 +115,46 @@ function AccountProfileComponent(props: Props) {
           [e.target.id]: e.target.value,
         }));
   };
+
+  const handleChangeTime=(e:React.ChangeEvent<HTMLInputElement>)=>{
+    e.persist();
+    setaddtask((addtask)=>({...addtask,[e.target.id]: Number(e.target.value)}));
+  }
+
   const handleUseProxy = () => {
     setaddtask((addtask) => ({ ...addtask, isUseProxy: !addtask.isUseProxy }));
   };
+
+  const handleCreateTask=()=>{
+    setaddTasks(addTasks.concat(addtask));
+  }
 
   const { classes } = props;
   return (
     <div className="container">
       <form className={classes.container} noValidate autoComplete="off">
+      <TextField
+          id="profilename"
+          name="profilename"
+          select
+          label="Select Profile"
+          className={classes.textField}
+          InputProps={{ className: classes.input }}
+          InputLabelProps={{ className: classes.input }}
+          value={addtask.profilename}
+          SelectProps={{
+            MenuProps: {
+              className: classes.menu,
+            },
+          }}
+          style={{marginRight:400}}
+          onChange={handleChangeAddTask}
+          margin="normal"
+        >
+          {userProfiles.map((option) => (
+            <MenuItem value={option.profilename}>{option.profilename}</MenuItem>
+          ))}
+        </TextField>  
         <TextField
           id="keyword"
           label="Keyword"
@@ -173,29 +206,7 @@ function AccountProfileComponent(props: Props) {
           {categoies.map((option) => (
             <MenuItem value={option}>{option}</MenuItem>
           ))}
-        </TextField>
-
-        <TextField
-          id="profilename"
-          name="profilename"
-          select
-          label="Select Profile"
-          className={classes.textField}
-          InputProps={{ className: classes.input }}
-          InputLabelProps={{ className: classes.input }}
-          value={addtask.profilename}
-          SelectProps={{
-            MenuProps: {
-              className: classes.menu,
-            },
-          }}
-          onChange={handleChangeAddTask}
-          margin="normal"
-        >
-          {userProfiles.map((option) => (
-            <MenuItem value={option.profilename}>{option.profilename}</MenuItem>
-          ))}
-        </TextField>     
+        </TextField>   
         <TextField
           id="refreshtime"
           InputProps={{ className: classes.input }}
@@ -203,7 +214,7 @@ function AccountProfileComponent(props: Props) {
           className={classes.textField}
           label="Refresh Time"
           value={addtask.refreshtime}
-          onChange={handleChangeAddTask}
+          onChange={handleChangeTime}
           margin="normal"
         />
         <TextField
@@ -213,7 +224,8 @@ function AccountProfileComponent(props: Props) {
           className={classes.textField}
           label="Checkout Delay"
           value={addtask.checkoutdelay}
-          onChange={handleChangeAddTask}
+          onChange={handleChangeTime}
+          style={{marginRight:200}}
           margin="normal"
         />
         <FormControlLabel
@@ -249,7 +261,7 @@ function AccountProfileComponent(props: Props) {
         )}
       </form>
       <div>
-        <ColorButton variant="outlined">Create Task</ColorButton>
+        <ColorButton variant="outlined" onClick={handleCreateTask}>Create Task</ColorButton>
       </div>
     </div>
   );

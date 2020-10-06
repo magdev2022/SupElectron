@@ -24,27 +24,25 @@ export const TitleBar = () => {
       <Grid container spacing={1}>
         <Grid item xs={6}>
           <Grid container spacing={1}>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
               <Paper className={classes.paper}>PRODUCT</Paper>
-            </Grid>
-            <Grid item xs={2}>
-              <Paper className={classes.paper}>SIZE</Paper>
-            </Grid>
-            <Grid item xs={2}>
-              <Paper className={classes.paper}>STYLE</Paper>
             </Grid>
             <Grid item xs={3}>
               <Paper className={classes.paper}>PROFILE</Paper>
+            </Grid>
+            <Grid item xs={3}>
+              <Paper className={classes.paper}>PROXY</Paper>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={6}>
           <Grid container spacing={1}>
-            <Grid item xs={2}>
-              <Paper className={classes.paper}>PAYMENT</Paper>
+            <Grid item xs={3}>
+              <Paper className={classes.paper}>SCHEDULE</Paper>
             </Grid>
-            <Grid item xs={4}>
-              <Paper className={classes.paper}>PROXY</Paper>
+
+            <Grid item xs={3}>
+              <Paper className={classes.paper}>Mode</Paper>
             </Grid>
             <Grid item xs={3}>
               <Paper className={classes.paper}>STATUS</Paper>

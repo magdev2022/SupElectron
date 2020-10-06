@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import Grid from "@material-ui/core/Grid";
 import { MenuItem, Paper, FormControl } from "@material-ui/core";
+import AddTask from "../Types/AddTask";
 const { ipcRenderer } = require("electron");
 import {
   StartActionButton,
@@ -12,6 +13,7 @@ import {
   LogActionButton,
   FindProductButton,
 } from "../Components/CustomIconButton";
+import { Label } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   textField: {
     "& label.Mui-focused": {
@@ -64,17 +66,13 @@ const payment_methods = [
     label: "COD",
   },
 ];
-export default function TaskControl() {
+interface TaskItemProps {
+  newtask: AddTask;
+}
+export const TaskItem: React.FC<TaskItemProps> = ({ newtask: addtask }) => {
   const classes = useStyles();
-  const [product_url, setProduct_url] = React.useState("");
   const [payment, setpayment] = React.useState("Credit");
-  const handleChangeProductURL = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setProduct_url(e.currentTarget.value);
-  };
   const handleChangePayment = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setpayment(e.target.value);
   };
   return (
@@ -87,73 +85,39 @@ export default function TaskControl() {
         <Grid container spacing={1}>
           <Grid item xs={6}>
             <Grid container spacing={1}>
-              <Grid item xs={5}>
-                <TextField
-                  fullWidth
-                  id="product_url"
-                  className={classes.textField}
-                  InputLabelProps={{ className: classes.input }}
-                  InputProps={{ className: classes.input }}
-                  value={product_url}
-                  onChange={handleChangeProductURL}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <TextField
-                  id="style_select"
-                  fullWidth
-                  select
-                  className={classes.select}
-                  SelectProps={{ className: classes.input }}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <TextField
-                  id="size_select"
-                  fullWidth
-                  select
-                  className={classes.select}
-                  SelectProps={{ className: classes.input }}
-                />
+              <Grid item xs={6}>
+                <label id="item" className={classes.label}>
+                  {addtask.keyword + "-" + addtask.style + "-" + addtask.size}
+                </label>
               </Grid>
               <Grid item xs={3}>
-                <TextField
-                  id="profile_select"
-                  fullWidth
-                  select
-                  className={classes.select}
-                  SelectProps={{ className: classes.input }}
-                />
+                <label id="item" className={classes.label}>
+                  {addtask.profilename}
+                </label>
+              </Grid>
+              <Grid item xs={3}>
+                <label id="item" className={classes.label}>
+                  {addtask.proxyname}
+                </label>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={6}>
             <Grid container spacing={1}>
-              <Grid item xs={2}>
-                <TextField
-                  id="payment_select"
-                  fullWidth
-                  select
-                  SelectProps={{ className: classes.input }}
-                  onChange={handleChangePayment}
-                  value={payment}
-                >
-                  {payment_methods.map((method) => (
-                    <MenuItem key={method.value} value={method.value}>
-                      {method.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
+              <Grid item xs={3} style={{ textAlign: "center" }}>
+                <label id="status_label" className={classes.label}>
+                  SCHEDULE
+                </label>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <TextField
-                  id="proxy_select"
+                  id="mode_select"
                   fullWidth
                   select
                   className={classes.select}
                   InputProps={{ className: classes.input }}
                   InputLabelProps={{ className: classes.input }}
-                />
+                ></TextField>
               </Grid>
               <Grid item xs={3} style={{ textAlign: "center" }}>
                 <label id="status_label" className={classes.label}>
@@ -161,7 +125,6 @@ export default function TaskControl() {
                 </label>
               </Grid>
               <Grid item xs={3} style={{ textAlign: "center" }}>
-                {FindProductButton(product_url)}
                 <StartActionButton />
                 <StopActionButton />
                 <DeleteActionButton />
@@ -173,4 +136,4 @@ export default function TaskControl() {
       </Paper>
     </form>
   );
-}
+};
