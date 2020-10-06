@@ -1,9 +1,8 @@
-module.exports.CARD_BRANDS = [
+export const CARD_BRANDS = [
     // TODO: Fix card brands
     { value: "visa", label: "Visa" },
     { value: "amex", label: "American Express" },
     { value: "master", label: "Mastercard" },
-    { value: "solo", label: "Solo" },
     { value: "jcb", label: "JCB" },
     { value: "cod", label: "代金引換" }
   ];

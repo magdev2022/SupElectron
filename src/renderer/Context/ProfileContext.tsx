@@ -3,7 +3,12 @@ import { createContext } from "react";
 import AccountProfile from "../Types/AccountProfile";
 import { useState, useCallback } from "react";
 
-const contentContext = createContext({
+interface ProfileProps{
+    userProfiles: AccountProfile[];
+    setuserProfiles:Function;
+}
+
+const contentContext = createContext<ProfileProps>({
   userProfiles: [],
   setuserProfiles: (update: []) => {}
 });

@@ -8,7 +8,7 @@ import Box from "@material-ui/core/Box";
 import TaskBoard from "./TaskBoard";
 import ProxyPanel from "./ProxyPanel";
 import SettingsPanel from "./Settings";
-import ProfilesPanel from "./ProfilesPanel";
+import {ProfilesPanel} from "./ProfilesPanel";
 import CreateTaskPanel from "./CreateTaskPanel";
 import {
   CloseButton,
