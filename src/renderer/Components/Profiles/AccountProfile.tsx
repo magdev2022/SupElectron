@@ -62,35 +62,35 @@ const ColorButton = withStyles((theme: Theme) => ({
   },
 }))(Button);
 
-const countries = ["Japan"];
+const countries = ["JAPAN"];
 
 export interface Props extends WithStyles<typeof styles> {}
 
-function AccountProfileComponent(props: Props) {  
+function AccountProfileComponent(props: Props) {
   const [profile, setprofile] = React.useState({
-    billingname: "",
+    name: "",
     email: "",
     address1: "",
     address2: "",
     address3: "",
     postalcode: "",
     state: "",
-    country: "Japan",
+    country: "JAPAN",
     city: "",
-    phonenumber: "",
+    phone: "",
     cardtype: "",
     cardnumber: "",
-    security_code: "",
+    securitycode: "",
     exp_month: "",
     exp_year: "",
     profilename: "",
   });
 
-  const {userProfiles, setuserProfiles } =React.useContext(contentContext);
+  const { userProfiles, setuserProfiles } = React.useContext(contentContext);
 
   //handle all inputs of profile
   const handleChangeProfile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.persist();  
+    e.persist();
     e.target.name != ""
       ? setprofile((profile) => ({
           ...profile,
@@ -99,31 +99,42 @@ function AccountProfileComponent(props: Props) {
       : setprofile((profile) => ({
           ...profile,
           [e.target.id]: e.target.value,
-        }));  
+        }));
   };
 
   //handle profiles when select the profilename
-  const handleChangeProfileList=(e:React.ChangeEvent<HTMLInputElement>)=>
-  {
+  const handleChangeProfileList = (e: React.ChangeEvent<HTMLInputElement>) => {
     for (let i = 0; i < userProfiles.length; i++) {
       const element = userProfiles[i];
-      if(element.profilename==e.target.value)
-      {
+      if (element.profilename == e.target.value) {
         setprofile(element);
         break;
       }
     }
-  }
+  };
 
   //create profile and save to json file
   const handleCreateProfile = () => {
-    setuserProfiles(userProfiles.concat(profile))
+    setuserProfiles(userProfiles.concat(profile));
     let senddata = {
       model: "profile",
       data: userProfiles,
     };
-    ipcRenderer.send("data", senddata);  
+    ipcRenderer.send("data", senddata);
   };
+
+  const handleImportProfile = () => {
+    var response = ipcRenderer.sendSync("import_profile");
+    setuserProfiles(JSON.parse(response));
+  };
+
+  const handleExportProfile=()=>{
+    let senddata = {
+      model:"save_profile",
+      data:userProfiles
+    }
+    ipcRenderer.send("data",senddata);
+  }
 
   const { classes } = props;
   return (
@@ -132,12 +143,12 @@ function AccountProfileComponent(props: Props) {
         <div className="container">
           <form className={classes.container} noValidate autoComplete="off">
             <TextField
-              id="billingname"
-              label="BillingName"
+              id="name"
+              label="name"
               className={classes.textField}
               InputProps={{ className: classes.input }}
               InputLabelProps={{ className: classes.input }}
-              value={profile.billingname}
+              value={profile.name}
               onChange={handleChangeProfile}
               margin="normal"
             />
@@ -248,12 +259,12 @@ function AccountProfileComponent(props: Props) {
               margin="normal"
             />
             <TextField
-              id="phonenumber"
+              id="phone"
               label="PhoneNumber"
               className={classes.textField}
               InputProps={{ className: classes.input }}
               InputLabelProps={{ className: classes.input }}
-              value={profile.phonenumber}
+              value={profile.phone}
               onChange={handleChangeProfile}
               margin="normal"
             />
@@ -279,7 +290,7 @@ function AccountProfileComponent(props: Props) {
                 },
               }}
               margin="normal"
-              style={{marginRight:100}}
+              style={{ marginRight: 100 }}
             >
               {CARD_BRANDS.map((option) => (
                 <MenuItem value={option.value}>{option.label}</MenuItem>
@@ -297,12 +308,12 @@ function AccountProfileComponent(props: Props) {
               margin="normal"
             />
             <TextField
-              id="security_code"
+              id="securitycode"
               label="Security Code"
               InputProps={{ className: classes.input }}
               InputLabelProps={{ className: classes.input }}
               className={classes.textField}
-              value={profile.security_code}
+              value={profile.securitycode}
               onChange={handleChangeProfile}
               margin="normal"
             />
@@ -356,10 +367,10 @@ function AccountProfileComponent(props: Props) {
               label="Profile Name"
               onChange={handleChangeProfile}
               margin="normal"
-              style={{marginRight:100,marginBottom:50}}
+              style={{ marginRight: 100, marginBottom: 50 }}
               value={profile.profilename}
             />
-             <TextField
+            <TextField
               id="profilelist"
               name="profilelist"
               select
@@ -377,19 +388,26 @@ function AccountProfileComponent(props: Props) {
               margin="normal"
             >
               {userProfiles.map((option) => (
-                <MenuItem value={option.profilename}>{option.profilename}</MenuItem>
+                <MenuItem value={option.profilename}>
+                  {option.profilename}
+                </MenuItem>
               ))}
             </TextField>
-          </form>          
-          <div>
-            <ColorButton variant="outlined">Import Profile</ColorButton>
-              <ColorButton variant="outlined" onClick={handleCreateProfile}>
-                Create Profile
-              </ColorButton>
-              <ColorButton variant="outlined">Delete Profile</ColorButton>
-            </div>
+          </form>
         </div>
       </Grid>
+      <div>
+        <ColorButton variant="outlined" onClick={handleImportProfile} style={{marginLeft:100}}>
+          Import Profile
+        </ColorButton>
+        <ColorButton variant="outlined" onClick={handleExportProfile}>
+          Export Profile
+        </ColorButton>
+        <ColorButton variant="outlined" onClick={handleCreateProfile}>
+          Create Profile
+        </ColorButton>
+        <ColorButton variant="outlined">Delete Profile</ColorButton>
+      </div>
     </Grid>
   );
 }

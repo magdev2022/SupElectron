@@ -1,6 +1,6 @@
 export default interface AccountProfile
 {
-    billingname:string;        
+    name:string;
     email: string;
     address1:string;
     address2:string;
@@ -9,10 +9,10 @@ export default interface AccountProfile
     state:string;
     country:string;
     city:string;    
-    phonenumber:string;
+    phone:string;
     cardtype:string;
     cardnumber: string;
-    security_code: string;
+    securitycode: string;
     exp_month: string;
     exp_year: string;
     profilename:string;

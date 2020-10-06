@@ -12,8 +12,12 @@ import {
   saveDataToFile,
   getFilePath,
   createMainDirectory,
+  readJSONFromFile,
+  OpenFileDialog,
+  SaveasFileDialog
 } from "./utils/LocalStorage/index";
 
+const fs = require("fs");
 let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow(): void {
@@ -102,8 +106,27 @@ ipcMain.on("data", (event: Event, receive_data: any) => {
       FILE_NAMES.PROFILES
     );
     saveDataToFile(receive_data.data, filename);
+  }else if(receive_data.model=="save_profile"){
+    let jsonData = receive_data.data;
+    SaveasFileDialog(JSON.stringify(jsonData),"profile.json");
   }
 });
+
+ipcMain.on("import_profile",(event:any)=>{
+  let filename = OpenFileDialog();
+  try {
+    fs.readFile(filename, "utf8", (err: any, data: string) => {
+      if (err) {
+        event.returnValue = "";
+        return;
+      }
+      event.returnValue = data;
+    });
+  } catch {
+    throw new Error("File not found");
+  }
+})
+
 
 ipcMain.on("find_product", (event: any, product_url: string) => {
   (async () => {

@@ -1,5 +1,6 @@
 import * as fs from "fs";
-
+const { dialog, app } = require("electron");
+const path = require("path");
 
 export const FILE_NAMES = {
   AUTH: "auth.json",
@@ -37,3 +38,31 @@ export const readJSONFromFile = (fileName: string): any =>
       }
     });
   });
+
+export function OpenFileDialog(): string {
+  let filepath: string[] = dialog.showOpenDialog({
+    properties: ["openFile"],
+  });
+  if (filepath == undefined) {
+    return "error";
+  } else {
+    return filepath[0];
+  }
+}
+
+export function SaveasFileDialog(content: any, filename: string) {
+  const options = {
+    defaultPath: path.join(app.getPath("documents"), filename),
+    title: "Save File",
+  };
+  dialog.showSaveDialog(options, (path) => {
+    if (path != undefined) {
+      fs.writeFile(path, content, function (err: any) {
+        if (err) {
+          return console.log(err);
+        }
+        console.log("The file was saved!");
+      });
+    }
+  });
+}

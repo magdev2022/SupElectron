@@ -7,7 +7,6 @@ import {
   EditTaskButton,
   CopyTaskButton,
   DeleteTaskButton,
-  AddTaskButton,
 } from "./CustomIconButton";
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -22,8 +21,7 @@ const useStyles = makeStyles((theme) => ({
 export default function TaskControl() {
   const classes = useStyles();
   return (
-    <Paper className={classes.paper}>
-      <AddTaskButton />
+    <Paper className={classes.paper}>     
       <AllStartActionButton />
       <AllStopActionButton />
       <EditTaskButton />
