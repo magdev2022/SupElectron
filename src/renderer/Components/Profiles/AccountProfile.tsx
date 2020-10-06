@@ -89,9 +89,7 @@ function AccountProfileComponent(props: Props) {
   const {userProfiles, setuserProfiles } =React.useContext(contentContext);
 
   const handleChangeProfile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.persist();
-    console.log(e.currentTarget);
-    console.log(e.target);
+    e.persist();  
     e.target.name != ""
       ? setprofile((profile) => ({
           ...profile,
@@ -100,8 +98,7 @@ function AccountProfileComponent(props: Props) {
       : setprofile((profile) => ({
           ...profile,
           [e.target.id]: e.target.value,
-        }));
-    console.log(profile.exp_year);
+        }));  
   };
   const handleCreateProfile = () => {
     setuserProfiles(userProfiles.concat(profile))
@@ -109,8 +106,7 @@ function AccountProfileComponent(props: Props) {
       model: "profile",
       data: userProfiles,
     };
-    ipcRenderer.send("data", senddata);
-    console.log(userProfiles.length);
+    ipcRenderer.send("data", senddata);  
   };
   const { classes } = props;
   return (
