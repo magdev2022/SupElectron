@@ -1,5 +1,4 @@
 const { convertProxyToRequestURL } = require('../utils/ProxyUtils')
-
 const rp = require("request-promise");
 
 module.exports = class HttpClient {
@@ -26,7 +25,7 @@ module.exports = class HttpClient {
   }
 
   generateCookie(key, value) {
-    return `${key}=${value}; path=/; domain=.wtaps.com`;
+    return `${key}=${value}; path=/; domain=www.supremenewyork.com`;
   }
 
   async addCookies(process, cookies) {
@@ -35,7 +34,7 @@ module.exports = class HttpClient {
       c.push(
         await this.setCookie(
           this.generateCookie(key, cookies[key]),
-          "https://www.wtaps.com"
+          "https://www.supremenewyork.com"
         )
       );
     }

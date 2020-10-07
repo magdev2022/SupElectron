@@ -1,9 +1,7 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Select from "@material-ui/core/Select";
 import Grid from "@material-ui/core/Grid";
-import { MenuItem, Paper, FormControl } from "@material-ui/core";
+import {Paper } from "@material-ui/core";
 import AddTask from "../Types/AddTask";
 const { ipcRenderer } = require("electron");
 import {
@@ -11,9 +9,7 @@ import {
   StopActionButton,
   DeleteActionButton,
   LogActionButton,
-  FindProductButton,
 } from "../Components/CustomIconButton";
-import { Label } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   textField: {
     "& label.Mui-focused": {
@@ -71,10 +67,6 @@ interface TaskItemProps {
 }
 export const TaskItem: React.FC<TaskItemProps> = ({ newtask: addtask }) => {
   const classes = useStyles();
-  const [payment, setpayment] = React.useState("Credit");
-  const handleChangePayment = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setpayment(e.target.value);
-  };
   return (
     <form
       noValidate
@@ -110,14 +102,20 @@ export const TaskItem: React.FC<TaskItemProps> = ({ newtask: addtask }) => {
                 </label>
               </Grid>
               <Grid item xs={3}>
-                <TextField
+                {/* <TextField
                   id="mode_select"
                   fullWidth
                   select
+                  style={{width:100}}
                   className={classes.select}
                   InputProps={{ className: classes.input }}
                   InputLabelProps={{ className: classes.input }}
-                ></TextField>
+                >
+                  {TaskModes.map((mode)=>(<MenuItem value={mode}>{mode}</MenuItem>))}
+                </TextField> */}
+                <label id="status_label" className={classes.label}>
+                  BrowserMode
+                </label>
               </Grid>
               <Grid item xs={3} style={{ textAlign: "center" }}>
                 <label id="status_label" className={classes.label}>

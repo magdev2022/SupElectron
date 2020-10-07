@@ -102,7 +102,7 @@ function AccountProfileComponent(props: Props) {
     checkoutdelay: 250,
   });
 
-  const { userProfiles, setuserProfiles,addTasks,setaddTasks } = React.useContext(contentContext);
+  const { userProfiles, setuserProfiles,addTasks,setaddTasks,addGroup,setaddGroup } = React.useContext(contentContext);
   const handleChangeAddTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();
     e.target.name != ""
@@ -127,6 +127,11 @@ function AccountProfileComponent(props: Props) {
 
   const handleCreateTask=()=>{
     setaddTasks(addTasks.concat(addtask));
+    let senddata={
+      model:"addtask",
+      data: addTasks
+    }
+    ipcRenderer.send("data",senddata);
   }
 
   const { classes } = props;
@@ -257,7 +262,9 @@ function AccountProfileComponent(props: Props) {
               },
             }}
             margin="normal"
-          ></TextField>
+          >
+            {addGroup.map((ele)=>(<MenuItem value={ele.name}>{ele.name}</MenuItem>))}
+          </TextField>
         )}
       </form>
       <div>

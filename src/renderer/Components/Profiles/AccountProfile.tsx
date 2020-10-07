@@ -48,7 +48,7 @@ const styles = (theme: Theme) =>
 
 const ColorButton = withStyles((theme: Theme) => ({
   root: {
-    color: "#dddddd99",
+    color: "#fff",
     backgroundColor: "#dddddd00",
     width: 160,
     height: 40,
@@ -144,7 +144,7 @@ function AccountProfileComponent(props: Props) {
           <form className={classes.container} noValidate autoComplete="off">
             <TextField
               id="name"
-              label="name"
+              label="Name"
               className={classes.textField}
               InputProps={{ className: classes.input }}
               InputLabelProps={{ className: classes.input }}

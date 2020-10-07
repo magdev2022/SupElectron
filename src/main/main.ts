@@ -109,6 +109,14 @@ ipcMain.on("data", (event: Event, receive_data: any) => {
   }else if(receive_data.model=="save_profile"){
     let jsonData = receive_data.data;
     SaveasFileDialog(JSON.stringify(jsonData),"profile.json");
+  }else if(receive_data.model=="addtask")
+  {
+    let filename: string = getFilePath(
+      LOCAL_STORAGE_PATH,
+      FILE_SEPARATOR,
+      FILE_NAMES.TASKS
+    );
+    saveDataToFile(receive_data.data, filename);
   }
 });
 
