@@ -14,6 +14,8 @@ interface TaskManage{
     setaddTasks:Function;
     addGroup: ProxyGroup[];
     setaddGroup:Function;
+    capapis:string[];
+    setcapapis:Function;
 }
 
 
@@ -24,17 +26,26 @@ const contentContext = createContext<TaskManage>({
   setaddTasks:(update:[])=>{},
   addGroup:[],
   setaddGroup:(update:[])=>{},
+  capapis:[],
+  setcapapis:(update:[])=>{}
 });
 
 const ContentProvider = ({ children }: any) => {
   const [userProfiles, setUserProfiles] = useState([]);
   const [addTasks, setAddTasks] = useState([]); 
   const [addGroup, setAddGroup] = useState([]);  
+  const [capapis, setCapapis]=useState([]);
   const setuserProfiles = useCallback(
     (update: []) => {
         setUserProfiles(update);
     },
     [setUserProfiles]
+  );
+  const setcapapis=useCallback(
+    (update: []) => {
+        setCapapis(update);
+    },
+    [setCapapis]
   );
   const setaddTasks=useCallback(
     (update:[])=>{
@@ -51,7 +62,7 @@ const ContentProvider = ({ children }: any) => {
   return (
     <contentContext.Provider
       value={{
-        userProfiles,setuserProfiles,addTasks,setaddTasks,addGroup,setaddGroup
+        userProfiles,setuserProfiles,addTasks,setaddTasks,addGroup,setaddGroup,capapis,setcapapis
       }}
     >
       {children}

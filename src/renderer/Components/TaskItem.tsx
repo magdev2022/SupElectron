@@ -52,16 +52,6 @@ const useStyles = makeStyles((theme) => ({
     background: "#232323",
   },
 }));
-const payment_methods = [
-  {
-    value: "Credit",
-    label: "Credit",
-  },
-  {
-    value: "COD",
-    label: "COD",
-  },
-];
 interface TaskItemProps {
   newtask: AddTask;
 }
@@ -123,7 +113,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ newtask: addtask }) => {
                 </label>
               </Grid>
               <Grid item xs={3} style={{ textAlign: "center" }}>
-                <StartActionButton />
+                <StartActionButton newtask={addtask}/>
                 <StopActionButton />
                 <DeleteActionButton />
                 <LogActionButton />

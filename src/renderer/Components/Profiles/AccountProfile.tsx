@@ -244,7 +244,7 @@ function AccountProfileComponent(props: Props) {
               margin="normal"
             >
               {JAPAN_STATES.map((option) => (
-                <MenuItem value={option.label}>{option.label}</MenuItem>
+                <MenuItem value={option.value}>{option.label}</MenuItem>
               ))}
             </TextField>
 

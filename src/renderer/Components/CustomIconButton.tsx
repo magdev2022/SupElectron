@@ -1,6 +1,7 @@
 import * as React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { IconButton } from "@material-ui/core";
+import AddTask from '../Types/AddTask'
 import {
   PlayArrow,
   Stop,
@@ -18,6 +19,7 @@ import {
   Remove,
 } from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
+import {contentContext} from "../Context/ProfileContext";
 const { ipcRenderer } = require("electron");
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -61,10 +63,27 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const StartActionButton = () => {
+interface StartActionProps{
+  newtask:AddTask
+}
+
+export const StartActionButton:React.FC<StartActionProps> = ({newtask:addtask}) => {
   const classes = useStyles();
-  const handleStartAction = () => {
-    console.log("start");
+  const {userProfiles} = React.useContext(contentContext);
+  const handleStartAction = () => {    
+    let selected_profile;
+    userProfiles.forEach((temp)=>{
+      if(temp.profilename==addtask.profilename)
+      {
+        selected_profile=temp;
+      }
+    })
+    let senddata = {
+      model:"start",
+      task:addtask,
+      profile:selected_profile
+    }
+    ipcRenderer.send("start",senddata);
   };
   return (
     <Tooltip title="Start" arrow>

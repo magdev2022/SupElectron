@@ -10,4 +10,8 @@ export default interface AddTask {
   proxyname: string;
   refreshtime: number;
   checkoutdelay:number;
+  status:string;
+  productID:string;
+  styleID:string;
+  sizeID:string;
 }

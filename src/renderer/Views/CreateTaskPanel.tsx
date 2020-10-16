@@ -100,6 +100,10 @@ function AccountProfileComponent(props: Props) {
     proxyname: "",
     refreshtime: 100,
     checkoutdelay: 250,
+    status:"",
+    styleID:"",
+    sizeID:"",
+    productID:""
   });
 
   const { userProfiles, setuserProfiles,addTasks,setaddTasks,addGroup,setaddGroup } = React.useContext(contentContext);
@@ -126,10 +130,13 @@ function AccountProfileComponent(props: Props) {
   };
 
   const handleCreateTask=()=>{
+    addtask.status="IDLE";
     setaddTasks(addTasks.concat(addtask));
+
+
     let senddata={
       model:"addtask",
-      data: addTasks
+      task: addTasks,      
     }
     ipcRenderer.send("data",senddata);
   }

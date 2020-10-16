@@ -7,6 +7,7 @@ import * as url from "url";
 import { ipcMain } from "electron";
 const puppeteer = require("puppeteer");
 const cheerio = require("cheerio");
+import {processtask} from '../main/botLogic/worker'
 import {
   FILE_NAMES,
   saveDataToFile,
@@ -83,11 +84,13 @@ const LOCAL_STORAGE_PATH = `${app.getPath("documents")}${FILE_SEPARATOR}AIOBOT`;
 ipcMain.on("close-me", () => {
   app.quit();
 });
+
 ipcMain.on("mini-me", () => {
   if (mainWindow !== null) {
     mainWindow.minimize();
   }
 });
+
 ipcMain.on("max-me", () => {
   if (mainWindow !== null) {
     if (mainWindow != null) {
@@ -97,7 +100,9 @@ ipcMain.on("max-me", () => {
     }
   }
 });
+
 createMainDirectory(LOCAL_STORAGE_PATH);
+
 ipcMain.on("data", (event: Event, receive_data: any) => {
   if (receive_data.model == "profile") {
     let filename: string = getFilePath(
@@ -135,38 +140,9 @@ ipcMain.on("import_profile",(event:any)=>{
   }
 })
 
-
-ipcMain.on("find_product", (event: any, product_url: string) => {
-  (async () => {
-    try {
-      const browser = await puppeteer.launch({
-        executablePath:
-          "D:\\Projects\\Electron\\WTAPS 1.3.0\\node_modules\\puppeteer\\.local-chromium\\win64-782078\\chrome-win\\chrome.exe",
-        headless: false,
-        defaultViewport: null,
-        args: [`--window-size=10,10`],
-      });
-      const page = await browser.newPage();
-      await page.goto("https://www.wtaps.com");
-      await page.goto(product_url);
-      let html = await page.content();
-      const fs = require("fs");
-      fs.writeFile("page.htm", html, function (err: any) {
-        if (err) {
-          return console.log(err);
-        }
-        console.log("The file was saved!");
-      });
-
-      const page_doc = cheerio.load(html);
-      const color_content = page_doc(".line.color").find(".txt").html();
-      const size_content = page_doc(".line.size").find(".txt").html();
-      await browser.close();
-      const return_value = { color: color_content, size: size_content };
-      console.log(return_value);
-      event.sender.send("found_product", return_value);
-    } catch (error) {
-      console.log(error);
-    }
-  })();
-});
+ipcMain.on("start",(event:any, receive_data:any)=>{
+  if(receive_data.model=="start")
+  {
+    processtask(receive_data.task, receive_data.profile);
+  }
+})

@@ -1,20 +1,24 @@
-module.exports.convertProxyToRequestURL = proxy => {
+export const convertProxyToRequestURL = (proxy:any) => {
   return proxy.auth
     ? `http://${proxy.auth.username}:${proxy.auth.password}@${proxy.ip}:${proxy.port}`
     : `http://${proxy.ip}:${proxy.port}`;
 };
 
-module.exports.convertProxyToString = proxy => {
+export const convertProxyToString = (proxy:any) => {
   let formatted = `${proxy.ip}:${proxy.port}`;
   if (proxy.auth) formatted += `:${proxy.auth.username}:${proxy.auth.password}`;
   return formatted;
 };
 
-const convertStringToProxy = input => {
+export const convertStringToProxy = (input:string) => {
   const components = input.trim().split(":");
   let proxy = {
     ip: components[0],
-    port: parseInt(components[1], 10)
+    port: parseInt(components[1], 10),
+    auth:{
+    username:"",
+    password:""
+    }
   };
   if (components.length === 4) {
     proxy.auth = {
@@ -24,9 +28,8 @@ const convertStringToProxy = input => {
   }
   return proxy;
 };
-module.exports.convertStringToProxy = convertStringToProxy;
 
-module.exports.convertStringToProxies = text => {
+export const convertStringToProxies = (text:string) => {
   const separated = text.split("\n");
   return separated
     .filter(
